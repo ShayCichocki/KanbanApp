@@ -143,7 +143,9 @@ export function Board() {
 
   const handleDeleteCard = (cardId: string) => {
     setBoard((prev) => {
-      const { [cardId]: _, ...remainingCards } = prev.cards;
+      const remainingCards = { ...prev.cards };
+      delete remainingCards[cardId];
+
       return {
         ...prev,
         cards: remainingCards,
