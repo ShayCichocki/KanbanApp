@@ -1,7 +1,10 @@
+export type CardLabel = 'Lab' | 'Text' | 'Clip';
+
 export interface Card {
   id: string;
   title: string;
   description?: string;
+  labels?: CardLabel[];
 }
 
 export interface Column {

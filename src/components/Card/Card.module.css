@@ -1,19 +1,44 @@
 .card {
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  min-height: 6rem;
+  padding: 1rem 1rem 1rem 1.2rem;
+  background: linear-gradient(180deg, rgba(255, 252, 239, 0.98), rgba(255, 245, 206, 0.96));
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   cursor: grab;
-  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  width: 3rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: rgba(119, 181, 255, 0.35);
+  transform: rotate(12deg);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.7rem;
+  height: 100%;
+  background: linear-gradient(180deg, var(--color-accent), var(--color-highlight));
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px) rotate(-0.5deg);
+  box-shadow: var(--shadow-lg);
 }
 
 .card:active {
@@ -21,40 +46,120 @@
 }
 
 .card.dragging {
-  opacity: 0.5;
-  box-shadow: var(--shadow-lg);
+  opacity: 0.88;
+  box-shadow: 10px 10px 0 rgba(41, 79, 155, 0.22);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.28rem;
+}
+
+.stickerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.pixelTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.35rem;
+  padding: 0.15rem 0.45rem;
+  border: 2px solid rgba(16, 39, 66, 0.72);
+  border-radius: 0.45rem;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.pixelTagMint {
+  --tag-color: #cffff0;
+}
+
+.pixelTagSky {
+  --tag-color: #d9f0ff;
+}
+
+.pixelTagPeach {
+  --tag-color: #ffe0d1;
+}
+
+.pixelTagActive {
+  background: var(--tag-color);
+  color: var(--color-text-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.pixelTagInactive {
+  background: rgba(255, 253, 244, 0.92);
+  color: var(--color-text-muted);
+}
+
+.pixelTag:hover {
+  transform: translateY(-1px);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding-top: 0.1rem;
+}
+
+.meta,
+.serial {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.serial {
+  color: var(--color-primary-dark);
 }
 
 .title {
-  flex: 1;
-  min-width: 0;
+  display: block;
   word-break: break-word;
+  color: var(--color-text-strong);
+  font-size: 0.98rem;
+  line-height: 1.55;
   outline: none;
-  padding: var(--spacing-xs);
+  padding: 0.15rem var(--spacing-xs) var(--spacing-xs);
   margin: calc(-1 * var(--spacing-xs));
   border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
 }
 
 .title:focus {
-  background-color: var(--color-background);
+  background-color: rgba(255, 255, 255, 0.72);
 }
 
 .deleteButton {
+  position: relative;
+  z-index: 1;
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 1.9rem;
+  height: 1.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid rgba(16, 39, 66, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 253, 244, 0.9);
   color: var(--color-text-muted);
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   line-height: 1;
-  border-radius: var(--radius-sm);
-  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .deleteButton:hover {
-  color: #ef4444;
-  background-color: #fef2f2;
+  color: var(--color-danger);
+  background-color: #fff0f0;
 }

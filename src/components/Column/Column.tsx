@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Card } from '../Card/Card';
-import type { Column as ColumnType, Card as CardType } from '../../types';
+import type { Column as ColumnType, Card as CardType, CardLabel } from '../../types';
 import styles from './Column.module.css';
 
 interface ColumnProps {
@@ -11,6 +11,7 @@ interface ColumnProps {
   onAddCard: (columnId: string, title: string) => void;
   onEditCard: (cardId: string, title: string) => void;
   onDeleteCard: (cardId: string) => void;
+  onToggleCardLabel: (cardId: string, label: CardLabel) => void;
   onEditColumn: (columnId: string, title: string) => void;
   onDeleteColumn: (columnId: string) => void;
 }
@@ -21,6 +22,7 @@ export function Column({
   onAddCard,
   onEditCard,
   onDeleteCard,
+  onToggleCardLabel,
   onEditColumn,
   onDeleteColumn,
 }: ColumnProps) {
@@ -57,22 +59,29 @@ export function Column({
   return (
     <div className={`${styles.column} ${isOver ? styles.over : ''}`}>
       <div className={styles.header}>
-        <span
-          className={styles.title}
-          contentEditable
-          suppressContentEditableWarning
-          onBlur={handleTitleChange}
-          onKeyDown={handleTitleKeyDown}
-        >
-          {column.title}
-        </span>
-        <button
-          className={styles.deleteButton}
-          onClick={() => onDeleteColumn(column.id)}
-          aria-label="Delete column"
-        >
-          &times;
-        </button>
+        <div className={styles.titleGroup}>
+          <span className={styles.label}>Module</span>
+          <span
+            className={styles.title}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={handleTitleChange}
+            onKeyDown={handleTitleKeyDown}
+          >
+            {column.title}
+          </span>
+        </div>
+
+        <div className={styles.headerActions}>
+          <span className={styles.count}>{String(cards.length).padStart(2, '0')}</span>
+          <button
+            className={styles.deleteButton}
+            onClick={() => onDeleteColumn(column.id)}
+            aria-label="Delete column"
+          >
+            &times;
+          </button>
+        </div>
       </div>
 
       <div ref={setNodeRef} className={styles.cards}>
@@ -83,6 +92,7 @@ export function Column({
               card={card}
               onEdit={onEditCard}
               onDelete={onDeleteCard}
+              onToggleLabel={onToggleCardLabel}
             />
           ))}
         </SortableContext>
@@ -100,6 +110,7 @@ export function Column({
           />
           <div className={styles.formButtons}>
             <button type="submit" className={styles.submitButton}>
+              <span className={styles.buttonGlyph} aria-hidden="true">[+]</span>
               Add
             </button>
             <button
@@ -110,6 +121,7 @@ export function Column({
                 setNewCardTitle('');
               }}
             >
+              <span className={styles.buttonGlyph} aria-hidden="true">[x]</span>
               Cancel
             </button>
           </div>
@@ -119,9 +131,11 @@ export function Column({
           className={styles.addCardButton}
           onClick={() => setIsAddingCard(true)}
         >
-          + Add card
+          <span className={styles.buttonGlyph} aria-hidden="true">[+]</span>
+          Add note card
         </button>
       )}
+
     </div>
   );
 }

@@ -2,17 +2,348 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: var(--spacing-md) var(--spacing-xl) var(--spacing-xl);
 }
 
-.header {
-  padding: var(--spacing-md) var(--spacing-xl);
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-  box-shadow: var(--shadow-md);
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0;
+.workspaceUtilityBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  padding: 0.95rem 1.25rem;
+  border-bottom: 3px solid var(--color-border-strong);
+  background: linear-gradient(135deg, rgba(233, 255, 244, 0.94), rgba(255, 249, 230, 0.92));
+}
+
+.utilityMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.8rem 1.1rem;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 1rem 1rem 0.35rem 0.35rem;
+  background: linear-gradient(180deg, rgba(255, 253, 244, 0.92), rgba(240, 248, 255, 0.96));
+  color: var(--color-text-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+
+.tabGlyph {
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+}
+
+.tabActive {
+  background: linear-gradient(180deg, var(--color-secondary), #dffff1);
+}
+
+.readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: rgba(255, 253, 244, 0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+.readoutLabel {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.readoutValue {
+  color: var(--color-text-strong);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.stickerSheet {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  min-width: 4.4rem;
+  padding: 0.45rem 0.75rem;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 0.8rem;
+  color: var(--color-text-strong);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+
+.stickerMint {
+  background: linear-gradient(180deg, #cffff0, #8ff0ca);
+}
+
+.stickerPeach {
+  background: linear-gradient(180deg, #ffe4d6, #ffb28f);
+}
+
+.stickerSky {
+  background: linear-gradient(180deg, #e6f5ff, #9fd3ff);
+}
+
+.stickerLemon {
+  background: linear-gradient(180deg, #fff9c9, #ffe781);
+}
+
+.workspaceFrame {
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(180deg, rgba(240, 248, 255, 0.88), rgba(255, 253, 244, 0.92)),
+    repeating-linear-gradient(90deg, rgba(119, 181, 255, 0.08) 0 1px, transparent 1px 66px),
+    repeating-linear-gradient(0deg, rgba(255, 231, 129, 0.14) 0 1px, transparent 1px 66px);
+  box-shadow: var(--shadow-panel);
+}
+
+.workspaceFrame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      rgba(41, 79, 155, 0.04) 1px 3px,
+      transparent 3px 6px
+    );
+  opacity: 0.34;
+  pointer-events: none;
+  animation: frameScan 12s linear infinite;
+}
+
+.workspaceFrame::after {
+  content: '';
+  position: absolute;
+  right: 2.1rem;
+  bottom: 1.65rem;
+  width: 6rem;
+  height: 1.3rem;
+  border-radius: 999px;
+  background: rgba(255, 231, 129, 0.55);
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+.workspaceTopBar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--spacing-md);
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 3px solid var(--color-border-strong);
+  background: linear-gradient(135deg, rgba(119, 181, 255, 0.92), rgba(255, 231, 129, 0.82));
+}
+
+.windowDots {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.windowDot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(16, 39, 66, 0.78);
+  border-radius: 999px;
+  background: rgba(255, 253, 244, 0.92);
+}
+
+.windowDot:nth-child(2) {
+  background: rgba(255, 231, 129, 0.9);
+}
+
+.windowDot:nth-child(3) {
+  background: rgba(255, 158, 131, 0.9);
+}
+
+.workspaceHeading {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+}
+
+.workspaceEyebrow {
+  color: rgba(16, 39, 66, 0.78);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.workspaceTitle {
+  color: var(--color-text-strong);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.workspaceBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.3rem;
+  padding: 0.4rem 0.85rem;
+  border: 2px solid rgba(16, 39, 66, 0.78);
+  border-radius: 999px;
+  background: rgba(255, 253, 244, 0.95);
+  color: var(--color-text-strong);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.badgeGlyph {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+}
+
+.bootStrip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.25rem;
+  border-bottom: 3px solid var(--color-border-strong);
+  background: rgba(16, 39, 66, 0.94);
+  color: #cffff0;
+  overflow: hidden;
+}
+
+.bootStrip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.12) 49%, transparent 64%);
+  transform: translateX(-42%);
+  animation: bootSweep 7s linear infinite;
+  pointer-events: none;
+}
+
+.bootPrompt,
+.bootDivider,
+.bootText {
+  position: relative;
+  z-index: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bootPrompt {
+  color: #ffe781;
+  font-weight: 800;
+}
+
+.bootDivider {
+  color: #77b5ff;
+}
+
+.bootText {
+  color: #dffff1;
+}
+
+@keyframes frameScan {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 18px;
+  }
+}
+
+@keyframes bootSweep {
+  from {
+    transform: translateX(-42%);
+  }
+
+  to {
+    transform: translateX(42%);
+  }
+}
+
+@media (max-width: 860px) {
+  .app {
+    padding: var(--spacing-md);
+  }
+
+  .workspaceUtilityBar,
+  .utilityMeta {
+    align-items: flex-start;
+  }
+
+  .workspaceTopBar {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .workspaceHeading {
+    justify-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspaceFrame::before,
+  .bootStrip::after {
+    animation: none;
+  }
 }

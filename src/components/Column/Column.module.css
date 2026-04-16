@@ -1,94 +1,226 @@
 .column {
+  --column-header-start: #7caeff;
+  --column-header-end: #b6f4dd;
+  --column-ribbon-start: #fff3af;
+  --column-ribbon-end: #ffe1a0;
+  --column-tab-active: #dffff1;
+  --column-status-start: rgba(224, 245, 255, 0.94);
+  --column-status-end: rgba(255, 249, 230, 0.94);
+  --column-card-dot: rgba(41, 79, 155, 0.16);
+  --column-counter-bg: rgba(255, 253, 244, 0.92);
   display: flex;
   flex-direction: column;
-  width: 300px;
-  min-width: 300px;
+  width: 20rem;
+  min-width: 20rem;
   max-height: 100%;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
+  position: relative;
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-border-strong);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-panel);
+}
+
+.column::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0 2rem,
+    rgba(123, 160, 214, 0.22) 2rem 2.08rem
+  );
+  pointer-events: none;
+}
+
+.column::after {
+  content: 'LIVE FILE';
+  position: absolute;
+  top: 1rem;
+  right: -2.5rem;
+  z-index: 2;
+  width: 8rem;
+  padding: 0.28rem 0.55rem;
+  border: 2px solid rgba(16, 39, 66, 0.72);
+  background: linear-gradient(180deg, var(--column-ribbon-start), var(--column-ribbon-end));
+  color: var(--color-text-strong);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(36deg);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
 }
 
 .column.over {
-  border-color: var(--color-primary-light);
-  background-color: #f0f5f2;
+  transform: translateY(-0.25rem);
+  border-color: var(--color-primary-dark);
+  box-shadow: 13px 13px 0 rgba(41, 79, 155, 0.28);
 }
 
 .header {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background-color: var(--color-primary);
-  color: var(--color-surface);
+  border-bottom: 3px solid var(--color-border-strong);
+  background: linear-gradient(135deg, var(--column-header-start), var(--column-header-end));
+}
+
+.column:nth-child(4n + 2) {
+  --column-header-start: #ffe082;
+  --column-header-end: #ffc4a7;
+  --column-ribbon-start: #ffe9b8;
+  --column-ribbon-end: #ffbf9f;
+  --column-tab-active: #fff0cb;
+  --column-status-start: rgba(255, 241, 204, 0.96);
+  --column-status-end: rgba(255, 224, 212, 0.94);
+  --column-card-dot: rgba(240, 108, 58, 0.14);
+  --column-counter-bg: rgba(255, 248, 217, 0.95);
+}
+
+.column:nth-child(4n + 3) {
+  --column-header-start: #9be7d0;
+  --column-header-end: #8dc6ff;
+  --column-ribbon-start: #cffff0;
+  --column-ribbon-end: #cde7ff;
+  --column-tab-active: #dcfff4;
+  --column-status-start: rgba(221, 255, 245, 0.96);
+  --column-status-end: rgba(221, 240, 255, 0.94);
+  --column-card-dot: rgba(45, 100, 220, 0.14);
+  --column-counter-bg: rgba(234, 255, 247, 0.95);
+}
+
+.column:nth-child(4n) {
+  --column-header-start: #ffc0db;
+  --column-header-end: #ffd67f;
+  --column-ribbon-start: #ffe0f0;
+  --column-ribbon-end: #ffe8a9;
+  --column-tab-active: #ffe6f2;
+  --column-status-start: rgba(255, 231, 244, 0.96);
+  --column-status-end: rgba(255, 243, 208, 0.94);
+  --column-card-dot: rgba(197, 66, 86, 0.12);
+  --column-counter-bg: rgba(255, 241, 248, 0.95);
+}
+
+.titleGroup {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.label {
+  color: rgba(16, 39, 66, 0.7);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .title {
   flex: 1;
-  font-weight: 600;
-  font-size: 1rem;
+  color: var(--color-text-strong);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   outline: none;
   padding: var(--spacing-xs);
   margin: calc(-1 * var(--spacing-xs));
   border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
 }
 
 .title:focus {
-  background-color: var(--color-primary-light);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.35rem;
+  height: 2.35rem;
+  padding: 0 0.5rem;
+  border: 2px solid rgba(16, 39, 66, 0.74);
+  border-radius: 999px;
+  background: var(--column-counter-bg);
+  color: var(--color-text-strong);
+  font-size: 0.86rem;
+  font-weight: 800;
 }
 
 .deleteButton {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 2.35rem;
+  height: 2.35rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(16, 39, 66, 0.74);
+  border-radius: 999px;
+  background: rgba(255, 253, 244, 0.92);
+  color: rgba(16, 39, 66, 0.72);
   font-size: 1.25rem;
   line-height: 1;
-  border-radius: var(--radius-sm);
-  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .deleteButton:hover {
-  color: white;
-  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-danger);
+  background-color: #fff0f0;
+  transform: translateY(-1px);
 }
 
 .cards {
   flex: 1;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   padding: var(--spacing-md);
   overflow-y: auto;
-  min-height: 100px;
+  min-height: 8rem;
+  background:
+    radial-gradient(circle at 1.35rem 1.35rem, var(--column-card-dot) 0 0.18rem, transparent 0.2rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 253, 244, 0.7));
 }
 
 .addCardForm {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  padding-top: 0;
+  padding: 0 var(--spacing-md) var(--spacing-md);
 }
 
 .input {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--color-border);
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  background-color: var(--color-paper);
+  color: var(--color-text-strong);
+  font-size: 0.92rem;
   outline: none;
-  transition: border-color var(--transition-fast);
+  box-shadow: inset 0 -0.3rem 0 rgba(119, 181, 255, 0.2);
 }
 
 .input:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-primary-dark);
 }
 
 .formButtons {
@@ -98,46 +230,81 @@
 
 .submitButton {
   flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--color-primary);
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
+  background: linear-gradient(180deg, var(--color-primary-light), var(--color-primary));
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
 }
 
 .submitButton:hover {
-  background-color: var(--color-primary-light);
+  transform: translateY(-1px);
 }
 
 .cancelButton {
   flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--color-border);
-  color: var(--color-text);
-  font-size: 0.875rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
+  background: linear-gradient(180deg, #fffdf4, #f4eed2);
+  color: var(--color-text-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
 }
 
 .cancelButton:hover {
-  background-color: #d1d5db;
+  transform: translateY(-1px);
 }
 
 .addCardButton {
-  margin: var(--spacing-md);
-  margin-top: 0;
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  text-align: left;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 var(--spacing-md) var(--spacing-md);
+  padding: 0.95rem 1rem;
+  border: 2px dashed var(--color-border-strong);
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  background: rgba(255, 249, 230, 0.85);
+  color: var(--color-text-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-align: left;
+  text-transform: uppercase;
 }
 
 .addCardButton:hover {
-  background-color: var(--color-border);
-  color: var(--color-text);
+  background-color: rgba(255, 231, 129, 0.78);
+  transform: translateY(-1px);
+}
+
+.buttonGlyph {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0;
+}
+
+@media (max-width: 860px) {
+  .column {
+    width: min(20rem, calc(100vw - 2rem));
+    min-width: min(20rem, calc(100vw - 2rem));
+  }
 }

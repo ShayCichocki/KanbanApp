@@ -1,65 +1,167 @@
 :root {
-  /* Color Palette based on #123524 */
-  --color-primary: #123524;
-  --color-primary-light: #1e5a3d;
-  --color-primary-dark: #0a1f15;
-  --color-accent: #24351a;
-  --color-background: #f5f7f5;
-  --color-surface: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
+  --color-primary: #2d64dc;
+  --color-primary-light: #77b5ff;
+  --color-primary-dark: #1a3b8a;
+  --color-secondary: #86f0cb;
+  --color-accent: #ff9e83;
+  --color-accent-strong: #f06c3a;
+  --color-highlight: #ffe781;
+  --color-background: #cae8ff;
+  --color-background-soft: #f0f8ff;
+  --color-surface: #fffdf4;
+  --color-surface-muted: #f4eed2;
+  --color-surface-alt: #e9fff4;
+  --color-paper: #fff9e6;
+  --color-text: #213d5b;
+  --color-text-strong: #102742;
+  --color-text-muted: #5f7894;
+  --color-border: #87a8dc;
+  --color-border-strong: #294f9b;
+  --color-danger: #c54256;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 3px 3px 0 rgba(41, 79, 155, 0.16);
+  --shadow-md: 5px 5px 0 rgba(41, 79, 155, 0.2);
+  --shadow-lg: 8px 8px 0 rgba(41, 79, 155, 0.24);
+  --shadow-card: 5px 5px 0 rgba(41, 79, 155, 0.18);
+  --shadow-panel: 10px 10px 0 rgba(41, 79, 155, 0.24);
 
-  /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
 
-  /* Border Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.8rem;
 
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-normal: 250ms ease;
+  --transition-fast: 180ms ease;
+  --transition-normal: 280ms ease;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: relative;
+  margin: 0;
+  font-family: 'Trebuchet MS', Verdana, Arial, sans-serif;
   background-color: var(--color-background);
+  background-image:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(255, 181, 137, 0.52), transparent 24%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.24) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, rgba(41, 79, 155, 0.08) 0 1px, transparent 1px 88px),
+    linear-gradient(180deg, #cae8ff 0%, #fef7cf 48%, #ffd1bf 100%);
   color: var(--color-text);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+body::before {
+  z-index: 2147483645;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0 1px,
+    rgba(41, 79, 155, 0.03) 1px 3px,
+    transparent 3px 6px
+  );
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+  animation: crtScan 14s linear infinite;
+}
+
+body::after {
+  z-index: 2147483644;
+  inset: -15%;
+  background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.24) 50%, transparent 64%);
+  opacity: 0.42;
+  transform: translateX(-38%);
+  animation: crtShimmer 9s linear infinite;
+}
+
+@keyframes crtScan {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 18px;
+  }
+}
+
+@keyframes crtShimmer {
+  from {
+    transform: translateX(-38%);
+  }
+
+  to {
+    transform: translateX(38%);
+  }
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
-  border: none;
+  border: 0;
   background: none;
+  color: inherit;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: inherit;
   font-size: inherit;
 }
 
+button,
+input,
+textarea {
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[contenteditable='true']:focus-visible {
+  outline: 3px solid rgba(255, 231, 129, 0.95);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(255, 231, 129, 0.88);
+  color: var(--color-text-strong);
+}
+
 #root {
   min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+  }
 }

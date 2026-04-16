@@ -15,7 +15,7 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Column } from '../Column/Column';
 import { Card } from '../Card/Card';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import type { Board as BoardType, Card as CardType } from '../../types';
+import type { Board as BoardType, Card as CardType, CardLabel } from '../../types';
 import { createDefaultBoard } from '../../types';
 import styles from './Board.module.css';
 
@@ -127,7 +127,7 @@ export function Board() {
     const cardId = generateId();
     setBoard((prev) => ({
       ...prev,
-      cards: { ...prev.cards, [cardId]: { id: cardId, title } },
+      cards: { ...prev.cards, [cardId]: { id: cardId, title, labels: [] } },
       columns: prev.columns.map((col) =>
         col.id === columnId ? { ...col, cardIds: [...col.cardIds, cardId] } : col
       ),
@@ -153,6 +153,29 @@ export function Board() {
           ...col,
           cardIds: col.cardIds.filter((id) => id !== cardId),
         })),
+      };
+    });
+  };
+
+  const handleToggleCardLabel = (cardId: string, label: CardLabel) => {
+    setBoard((prev) => {
+      const card = prev.cards[cardId];
+      if (!card) return prev;
+
+      const labels = card.labels ?? [];
+      const nextLabels = labels.includes(label)
+        ? labels.filter((value) => value !== label)
+        : [...labels, label];
+
+      return {
+        ...prev,
+        cards: {
+          ...prev.cards,
+          [cardId]: {
+            ...card,
+            labels: nextLabels,
+          },
+        },
       };
     });
   };
@@ -212,21 +235,34 @@ export function Board() {
             onAddCard={handleAddCard}
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
+            onToggleCardLabel={handleToggleCardLabel}
             onEditColumn={handleEditColumn}
             onDeleteColumn={handleDeleteColumn}
           />
         ))}
 
         <form onSubmit={handleAddColumn} className={styles.addColumn}>
+          <span className={styles.formEyebrow}>New Studio Tile</span>
+          <label className={styles.inputLabel} htmlFor="new-column-title">
+            Column name
+          </label>
+          <div className={styles.pixelRow} aria-hidden="true">
+            <span className={`${styles.pixel} ${styles.pixelMint}`} />
+            <span className={`${styles.pixel} ${styles.pixelBlue}`} />
+            <span className={`${styles.pixel} ${styles.pixelPeach}`} />
+            <span className={`${styles.pixel} ${styles.pixelLemon}`} />
+          </div>
           <input
+            id="new-column-title"
             type="text"
             value={newColumnTitle}
             onChange={(e) => setNewColumnTitle(e.target.value)}
-            placeholder="Add column..."
+            placeholder="Seminar / Sprint / Review"
             className={styles.input}
           />
           <button type="submit" className={styles.addButton}>
-            +
+            <span className={styles.actionGlyph} aria-hidden="true">[+]</span>
+            Make Tile
           </button>
         </form>
       </div>
@@ -237,6 +273,7 @@ export function Board() {
             card={activeCard}
             onEdit={() => {}}
             onDelete={() => {}}
+            onToggleLabel={() => {}}
           />
         ) : null}
       </DragOverlay>

@@ -1,15 +1,18 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { Card as CardType } from '../../types';
+import type { Card as CardType, CardLabel } from '../../types';
 import styles from './Card.module.css';
+
+const CARD_LABELS: CardLabel[] = ['Lab', 'Text', 'Clip'];
 
 interface CardProps {
   card: CardType;
   onEdit: (id: string, title: string) => void;
   onDelete: (id: string) => void;
+  onToggleLabel: (id: string, label: CardLabel) => void;
 }
 
-export function Card({ card, onEdit, onDelete }: CardProps) {
+export function Card({ card, onEdit, onDelete, onToggleLabel }: CardProps) {
   const {
     attributes,
     listeners,
@@ -24,6 +27,7 @@ export function Card({ card, onEdit, onDelete }: CardProps) {
     transition,
   };
 
+  const labels = card.labels ?? [];
   const handleTitleChange = (e: React.FocusEvent<HTMLSpanElement>) => {
     const newTitle = e.currentTarget.textContent?.trim() || card.title;
     if (newTitle !== card.title) {
@@ -38,6 +42,15 @@ export function Card({ card, onEdit, onDelete }: CardProps) {
     }
   };
 
+  const handleLabelPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+  };
+
+  const handleLabelClick = (label: CardLabel) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onToggleLabel(card.id, label);
+  };
+
   return (
     <div
       ref={setNodeRef}
@@ -46,15 +59,48 @@ export function Card({ card, onEdit, onDelete }: CardProps) {
       {...attributes}
       {...listeners}
     >
-      <span
-        className={styles.title}
-        contentEditable
-        suppressContentEditableWarning
-        onBlur={handleTitleChange}
-        onKeyDown={handleKeyDown}
-      >
-        {card.title}
-      </span>
+      <div className={styles.content}>
+        <div className={styles.stickerRow}>
+          {CARD_LABELS.map((label) => {
+            const isActive = labels.includes(label);
+            const variantClass =
+              label === 'Lab'
+                ? styles.pixelTagMint
+                : label === 'Text'
+                  ? styles.pixelTagSky
+                  : styles.pixelTagPeach;
+
+            return (
+              <button
+                key={label}
+                type="button"
+                className={`${styles.pixelTag} ${variantClass} ${isActive ? styles.pixelTagActive : styles.pixelTagInactive}`}
+                aria-pressed={isActive}
+                onPointerDown={handleLabelPointerDown}
+                onClick={handleLabelClick(label)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className={styles.metaRow}>
+          <span className={styles.meta}>Study Note</span>
+          <span className={styles.serial}>{card.id.slice(-4).toUpperCase()}</span>
+        </div>
+
+        <span
+          className={styles.title}
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={handleTitleChange}
+          onKeyDown={handleKeyDown}
+        >
+          {card.title}
+        </span>
+      </div>
+
       <button
         className={styles.deleteButton}
         onClick={(e) => {
